@@ -148,17 +148,17 @@
   const getAlbum = () => albums[currentAlbumIndex];
   const pad = (n) => String(n+1).padStart(2,'0');
   
-  // === ОБЛОЖКИ (остаются в папках covers/ru и covers/en) ===
+  // === ССЫЛКА НА ТВОЙ РЕЛИЗ ===
+  const releaseBaseUrl = "https://github.com/warmlight-music/warm-light/releases/download/v1.0/";
+  
   const coverPath = (i) => {
     const fileNum = currentAlbumIndex === 0 ? pad(i) : pad(i + 8);
     return `covers/${lang}/${fileNum}.jpg`;
   };
   
-  // === МУЗЫКА (теперь ищем файлы с префиксом ru- и en-) ===
   const songPath = (i) => {
     const fileNum = currentAlbumIndex === 0 ? pad(i) : pad(i + 8);
-    // Если язык русский - ищем ru-09.mp3 и т.д. Если английский - en-09.mp3
-    return `songs/${lang}/${lang}-${fileNum}.mp3`; 
+    return `${releaseBaseUrl}${lang}-${fileNum}.mp3`;
   };
   
   const trackName = (t) => lang === 'ru' ? t.ru : t.en;
