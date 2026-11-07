@@ -27,66 +27,10 @@
     -webkit-user-select: none; user-select: none;
     transition: background 0.5s ease, color 0.5s ease;
   }
-
-  /* --- НОВЫЙ БЛОК С ПОДСКАЗКОЙ И КНОПКАМИ --- */
   .top-bar { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 12px; }
-  
-  .hint-text {
-    text-align: center;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--accent);
-    animation: pulse 2s infinite;
-    margin-bottom: -5px;
-    text-shadow: 0 0 10px var(--glow);
-  }
-  @keyframes pulse {
-    0% { opacity: 0.7; transform: translateY(0); }
-    50% { opacity: 1; transform: translateY(-3px); }
-    100% { opacity: 0.7; transform: translateY(0); }
-  }
-
-  .albums-nav { 
-    display: flex; 
-    gap: 8px; 
-    justify-content: center; 
-    background: rgba(0,0,0,0.2); 
-    padding: 8px; 
-    border-radius: 20px; 
-    border: 2px solid rgba(240,160,75,.2); 
-    transition: background 0.5s ease, border-color 0.5s ease;
-  }
-  .albums-nav button { 
-    flex: 1; 
-    background: transparent; 
-    border: 2px solid transparent; 
-    color: var(--muted); 
-    padding: 12px 10px; 
-    border-radius: 14px; 
-    font-weight: 800; 
-    font-size: 15px; 
-    cursor: pointer; 
-    transition: all .3s ease; 
-    text-transform: uppercase;
-  }
-  
-  /* Неактивная кнопка светится, чтобы ее заметили */
-  .albums-nav button:not(.active) {
-    border-color: rgba(240,160,75,.3);
-    box-shadow: inset 0 0 10px rgba(240,160,75,.1);
-  }
-  .albums-nav button:not(.active):hover {
-    border-color: var(--accent);
-    color: var(--text);
-  }
-
-  .albums-nav button.active { 
-    background: linear-gradient(135deg,var(--accent),var(--accent2)); 
-    color: #0f141a; 
-    box-shadow: 0 4px 15px var(--glow); 
-    border-color: transparent;
-  }
-
+  .albums-nav { display: flex; gap: 10px; justify-content: center; background: var(--card); padding: 6px; border-radius: 16px; border: 1px solid rgba(240,160,75,.15); transition: background 0.5s ease; }
+  .albums-nav button { flex: 1; background: transparent; border: none; color: var(--muted); padding: 10px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all .3s ease; }
+  .albums-nav button.active { background: rgba(255,255,255,.08); color: var(--accent); }
   .lang { align-self:flex-end; display:flex; gap:6px; background:var(--card); padding:4px; border-radius:999px; border:1px solid rgba(240,160,75,.25); transition: background 0.5s ease; }
   .lang button { background:transparent; border:none; color:var(--muted); padding:6px 14px; border-radius:999px; font-weight:700; font-size:13px; cursor:pointer; transition:all .3s ease; }
   .lang button.active { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#0f141a; box-shadow:0 4px 14px var(--glow); }
@@ -126,10 +70,6 @@
       <button id="btnRu">RU</button>
       <button id="btnEn" class="active">EN</button>
     </div>
-    
-    <!-- ПОДСКАЗКА -->
-    <div class="hint-text" id="hintText">👇 У нас есть ещё один альбом! 👇</div>
-
     <div class="albums-nav" id="albumsNav">
       <button class="active" data-album="0">Warm Light</button>
       <button data-album="1">After the Rain</button>
@@ -160,10 +100,20 @@
   </div>
 
 <script>
-  // ID файлов (взяты с твоего скриншота DevTools)
+  // ТОЧНЫЕ ID файлов для каждого трека (16 для EN и 16 для RU)
   const fileIds = {
-    en: ["34473192", "34473193", "34473195", "34473138", "34473141", "34473143", "34473148", "34473154", "34473156", "34473159", "34473166", "34473169", "34473173", "34473180", "34473187", "34473190"],
-    ru: ["34473248", "34473250", "34473256", "34473258", "34473222", "34473223", "34473224", "34473227", "34473231", "34473236", "34473239", "34473240", "34473243", "34473244", "34473245", "34473247"] 
+    en: [
+      "34473192", "34473193", "34473195", // en-01, en-02, en-03
+      "34473138", "34473141", "34473143", "34473148", "34473154", // en-04 по en-08
+      "34473156", "34473159", "34473166", "34473169", "34473173", // en-09 по en-13
+      "34473180", "34473187", "34473190"  // en-14 по en-16
+    ],
+    ru: [
+      "34473248", "34473250", "34473256", "34473258", // ru-01 по ru-04
+      "34473222", "34473223", "34473224", "34473227", // ru-05 по ru-08
+      "34473231", "34473236", "34473239", "34473240", // ru-09 по ru-12
+      "34473243", "34473244", "34473245", "34473247"  // ru-13 по ru-16
+    ]
   };
 
   const albums = [
@@ -210,7 +160,6 @@
   const btnRu       = document.getElementById('btnRu');
   const btnEn       = document.getElementById('btnEn');
   const albumsNav   = document.getElementById('albumsNav');
-  const hintText    = document.getElementById('hintText');
 
   const getAlbum = () => albums[currentAlbumIndex];
   const pad = (n) => String(n+1).padStart(2,'0');
@@ -251,13 +200,6 @@
     albumTitle.textContent = lang === 'ru' ? album.titleRu : album.titleEn;
     albumSub.textContent = lang === 'ru' ? album.titleEn : album.titleRu;
     playerArtist.textContent = `${lang === 'en' ? album.titleEn : album.titleRu} / ${lang === 'en' ? album.titleRu : album.titleEn}`;
-    
-    // Прячем подсказку, если выбран второй альбом
-    if (currentAlbumIndex === 1) {
-      hintText.style.display = 'none';
-    } else {
-      hintText.style.display = 'block';
-    }
   }
 
   function resetPlayer() {
