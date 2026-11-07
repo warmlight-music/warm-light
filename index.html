@@ -28,69 +28,68 @@
     transition: background 0.5s ease, color 0.5s ease;
   }
 
-  /* --- НОВЫЙ БЛОК С ПОДСКАЗКОЙ И КНОПКАМИ --- */
-  .top-bar { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 12px; }
+  /* ВЕРХНЯЯ ПАНЕЛЬ */
+  .top-bar { 
+    width: 100%; 
+    max-width: 600px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+  }
   
+  /* Блок с языком */
+  .lang-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+  .lang-hint { 
+    font-size: 12px; 
+    color: var(--accent); 
+    font-weight: 700; 
+    text-align: right; 
+    animation: pulse 2s infinite;
+  }
+  .lang { display:flex; gap:6px; background:var(--card); padding:4px; border-radius:999px; border:1px solid rgba(240,160,75,.25); }
+  .lang button { background:transparent; border:none; color:var(--muted); padding:6px 14px; border-radius:999px; font-weight:700; font-size:13px; cursor:pointer; transition:all .3s ease; }
+  .lang button.active { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#0f141a; box-shadow:0 4px 14px var(--glow); }
+
+  /* Подсказка про второй альбом */
   .hint-text {
     text-align: center;
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 15px;
+    font-weight: 800;
     color: var(--accent);
     animation: pulse 2s infinite;
-    margin-bottom: -5px;
     text-shadow: 0 0 10px var(--glow);
+    margin-top: 10px;
   }
+  
   @keyframes pulse {
     0% { opacity: 0.7; transform: translateY(0); }
     50% { opacity: 1; transform: translateY(-3px); }
     100% { opacity: 0.7; transform: translateY(0); }
   }
 
+  /* Кнопки альбомов */
   .albums-nav { 
-    display: flex; 
-    gap: 8px; 
-    justify-content: center; 
-    background: rgba(0,0,0,0.2); 
-    padding: 8px; 
-    border-radius: 20px; 
+    display: flex; gap: 8px; justify-content: center; width: 100%;
+    background: rgba(0,0,0,0.2); padding: 8px; border-radius: 20px; 
     border: 2px solid rgba(240,160,75,.2); 
     transition: background 0.5s ease, border-color 0.5s ease;
   }
   .albums-nav button { 
-    flex: 1; 
-    background: transparent; 
-    border: 2px solid transparent; 
-    color: var(--muted); 
-    padding: 12px 10px; 
-    border-radius: 14px; 
-    font-weight: 800; 
-    font-size: 15px; 
-    cursor: pointer; 
-    transition: all .3s ease; 
-    text-transform: uppercase;
+    flex: 1; background: transparent; border: 2px solid transparent; 
+    color: var(--muted); padding: 12px 10px; border-radius: 14px; 
+    font-weight: 800; font-size: 15px; cursor: pointer; 
+    transition: all .3s ease; text-transform: uppercase;
   }
+  .albums-nav button:not(.active) { border-color: rgba(240,160,75,.3); box-shadow: inset 0 0 10px rgba(240,160,75,.1); }
+  .albums-nav button:not(.active):hover { border-color: var(--accent); color: var(--text); }
+  .albums-nav button.active { background: linear-gradient(135deg,var(--accent),var(--accent2)); color: #0f141a; box-shadow: 0 4px 15px var(--glow); border-color: transparent; }
   
-  /* Неактивная кнопка светится, чтобы ее заметили */
-  .albums-nav button:not(.active) {
-    border-color: rgba(240,160,75,.3);
-    box-shadow: inset 0 0 10px rgba(240,160,75,.1);
-  }
-  .albums-nav button:not(.active):hover {
-    border-color: var(--accent);
-    color: var(--text);
-  }
-
-  .albums-nav button.active { 
-    background: linear-gradient(135deg,var(--accent),var(--accent2)); 
-    color: #0f141a; 
-    box-shadow: 0 4px 15px var(--glow); 
-    border-color: transparent;
-  }
-
-  .lang { align-self:flex-end; display:flex; gap:6px; background:var(--card); padding:4px; border-radius:999px; border:1px solid rgba(240,160,75,.25); transition: background 0.5s ease; }
-  .lang button { background:transparent; border:none; color:var(--muted); padding:6px 14px; border-radius:999px; font-weight:700; font-size:13px; cursor:pointer; transition:all .3s ease; }
-  .lang button.active { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#0f141a; box-shadow:0 4px 14px var(--glow); }
-  
+  /* ОСТАЛЬНОЙ ДИЗАЙН */
   .album { text-align:center; display:flex; flex-direction:column; align-items:center; gap:16px; width:100%; max-width:600px; }
   .album__cover { width:min(280px,72vw); aspect-ratio:1/1; border-radius:22px; object-fit:cover; box-shadow:0 24px 70px var(--glow); border:2px solid rgba(240,160,75,.3); pointer-events: none; transition: box-shadow 0.5s ease, border-color 0.5s ease; }
   .album__title { font-size:clamp(28px,6vw,48px); font-weight:800; letter-spacing:-.02em; background:linear-gradient(135deg, var(--text), var(--accent)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; line-height:1.1; transition: background 0.5s ease; }
@@ -122,14 +121,19 @@
 <body>
 
   <div class="top-bar">
-    <div class="lang" role="group" aria-label="Language">
-      <button id="btnRu">RU</button>
-      <button id="btnEn" class="active">EN</button>
+    <!-- Блок с языком -->
+    <div class="lang-container">
+      <div class="lang-hint" id="langHint">Тут есть песни на двух языках!</div>
+      <div class="lang" role="group" aria-label="Language">
+        <button id="btnRu">RU</button>
+        <button id="btnEn" class="active">EN</button>
+      </div>
     </div>
     
-    <!-- ПОДСКАЗКА -->
+    <!-- Подсказка про второй альбом -->
     <div class="hint-text" id="hintText">👇 У нас есть ещё один альбом! 👇</div>
 
+    <!-- Кнопки альбомов -->
     <div class="albums-nav" id="albumsNav">
       <button class="active" data-album="0">Warm Light</button>
       <button data-album="1">After the Rain</button>
@@ -160,7 +164,6 @@
   </div>
 
 <script>
-  // ID файлов (взяты с твоего скриншота DevTools)
   const fileIds = {
     en: ["34473192", "34473193", "34473195", "34473138", "34473141", "34473143", "34473148", "34473154", "34473156", "34473159", "34473166", "34473169", "34473173", "34473180", "34473187", "34473190"],
     ru: ["34473248", "34473250", "34473256", "34473258", "34473222", "34473223", "34473224", "34473227", "34473231", "34473236", "34473239", "34473240", "34473243", "34473244", "34473245", "34473247"] 
@@ -210,7 +213,7 @@
   const btnRu       = document.getElementById('btnRu');
   const btnEn       = document.getElementById('btnEn');
   const albumsNav   = document.getElementById('albumsNav');
-  const hintText    = document.getElementById('hintText');
+  const langHint    = document.getElementById('langHint');
 
   const getAlbum = () => albums[currentAlbumIndex];
   const pad = (n) => String(n+1).padStart(2,'0');
@@ -251,12 +254,11 @@
     albumTitle.textContent = lang === 'ru' ? album.titleRu : album.titleEn;
     albumSub.textContent = lang === 'ru' ? album.titleEn : album.titleRu;
     playerArtist.textContent = `${lang === 'en' ? album.titleEn : album.titleRu} / ${lang === 'en' ? album.titleRu : album.titleEn}`;
-    
-    // Прячем подсказку, если выбран второй альбом
-    if (currentAlbumIndex === 1) {
-      hintText.style.display = 'none';
+
+    if (lang === 'en') {
+      langHint.textContent = "Songs in two languages!";
     } else {
-      hintText.style.display = 'block';
+      langHint.textContent = "Тут есть песни на двух языках!";
     }
   }
 
@@ -366,32 +368,54 @@
     transition: background 0.5s ease, color 0.5s ease;
   }
 
-  .top-bar { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 12px; }
+  /* ВЕРХНЯЯ ПАНЕЛЬ */
+  .top-bar { 
+    width: 100%; 
+    max-width: 600px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+  }
   
-  .hint-text {
-    text-align: center;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--accent);
+  /* Блок с языком (теперь в строку) */
+  .lang-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 10px;
+  }
+  .lang-hint { 
+    font-size: 13px; 
+    color: var(--accent); 
+    font-weight: 700; 
     animation: pulse 2s infinite;
-    margin-bottom: -5px;
     text-shadow: 0 0 10px var(--glow);
   }
+  .lang { display:flex; gap:6px; background:var(--card); padding:4px; border-radius:999px; border:1px solid rgba(240,160,75,.25); }
+  .lang button { background:transparent; border:none; color:var(--muted); padding:6px 14px; border-radius:999px; font-weight:700; font-size:13px; cursor:pointer; transition:all .3s ease; }
+  .lang button.active { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#0f141a; box-shadow:0 4px 14px var(--glow); }
+
+  /* Подсказка про второй альбом */
+  .hint-text {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--accent);
+    animation: pulse 2s infinite;
+    text-shadow: 0 0 10px var(--glow);
+    margin-top: 10px;
+  }
+  
   @keyframes pulse {
     0% { opacity: 0.7; transform: translateY(0); }
     50% { opacity: 1; transform: translateY(-3px); }
     100% { opacity: 0.7; transform: translateY(0); }
   }
 
-  .lang-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
-  .lang-hint { font-size: 11px; color: var(--accent); font-weight: 600; text-align: right; padding-right: 10px; animation: pulse 2s infinite;}
-  
-  .lang { display:flex; gap:6px; background:var(--card); padding:4px; border-radius:999px; border:1px solid rgba(240,160,75,.25); transition: background 0.5s ease; }
-  .lang button { background:transparent; border:none; color:var(--muted); padding:6px 14px; border-radius:999px; font-weight:700; font-size:13px; cursor:pointer; transition:all .3s ease; }
-  .lang button.active { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#0f141a; box-shadow:0 4px 14px var(--glow); }
-
+  /* Кнопки альбомов */
   .albums-nav { 
-    display: flex; gap: 8px; justify-content: center; 
+    display: flex; gap: 8px; justify-content: center; width: 100%;
     background: rgba(0,0,0,0.2); padding: 8px; border-radius: 20px; 
     border: 2px solid rgba(240,160,75,.2); 
     transition: background 0.5s ease, border-color 0.5s ease;
@@ -406,6 +430,7 @@
   .albums-nav button:not(.active):hover { border-color: var(--accent); color: var(--text); }
   .albums-nav button.active { background: linear-gradient(135deg,var(--accent),var(--accent2)); color: #0f141a; box-shadow: 0 4px 15px var(--glow); border-color: transparent; }
   
+  /* ОСТАЛЬНОЙ ДИЗАЙН */
   .album { text-align:center; display:flex; flex-direction:column; align-items:center; gap:16px; width:100%; max-width:600px; }
   .album__cover { width:min(280px,72vw); aspect-ratio:1/1; border-radius:22px; object-fit:cover; box-shadow:0 24px 70px var(--glow); border:2px solid rgba(240,160,75,.3); pointer-events: none; transition: box-shadow 0.5s ease, border-color 0.5s ease; }
   .album__title { font-size:clamp(28px,6vw,48px); font-weight:800; letter-spacing:-.02em; background:linear-gradient(135deg, var(--text), var(--accent)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; line-height:1.1; transition: background 0.5s ease; }
@@ -437,8 +462,8 @@
 <body>
 
   <div class="top-bar">
-    <!-- НОВАЯ ПОДСКАЗКА ДЛЯ ЯЗЫКОВ -->
-    <div class="lang-wrap">
+    <!-- Блок с языком (теперь в строку) -->
+    <div class="lang-row">
       <div class="lang-hint" id="langHint">Тут есть песни на двух языках!</div>
       <div class="lang" role="group" aria-label="Language">
         <button id="btnRu">RU</button>
@@ -446,8 +471,10 @@
       </div>
     </div>
     
+    <!-- Подсказка про второй альбом -->
     <div class="hint-text" id="hintText">👇 У нас есть ещё один альбом! 👇</div>
 
+    <!-- Кнопки альбомов -->
     <div class="albums-nav" id="albumsNav">
       <button class="active" data-album="0">Warm Light</button>
       <button data-album="1">After the Rain</button>
@@ -527,7 +554,6 @@
   const btnRu       = document.getElementById('btnRu');
   const btnEn       = document.getElementById('btnEn');
   const albumsNav   = document.getElementById('albumsNav');
-  const hintText    = document.getElementById('hintText');
   const langHint    = document.getElementById('langHint');
 
   const getAlbum = () => albums[currentAlbumIndex];
@@ -569,10 +595,7 @@
     albumTitle.textContent = lang === 'ru' ? album.titleRu : album.titleEn;
     albumSub.textContent = lang === 'ru' ? album.titleEn : album.titleRu;
     playerArtist.textContent = `${lang === 'en' ? album.titleEn : album.titleRu} / ${lang === 'en' ? album.titleRu : album.titleEn}`;
-    
-    if (currentAlbumIndex === 1) { hintText.style.display = 'none'; } else { hintText.style.display = 'block'; }
 
-    // Меняем текст подсказки для языков
     if (lang === 'en') {
       langHint.textContent = "Songs in two languages!";
     } else {
@@ -692,39 +715,46 @@
     display: flex; 
     flex-direction: column; 
     align-items: center; 
-    gap: 16px; 
+    gap: 12px; 
   }
   
-  .lang-wrap { 
-    align-self: flex-end; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: flex-end; 
-    gap: 4px; 
+  /* Обертка для строки с языком и текстом */
+  .lang-row {
+    display: flex;
+    justify-content: flex-end; /* Прижимаем к правому краю */
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: -5px;
   }
-  .lang-hint { 
-    font-size: 11px; 
-    color: var(--accent); 
-    font-weight: 700; 
-    text-align: right; 
-    padding-right: 10px; 
-    animation: pulse 2s infinite;
+
+  .lang-hint {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 700;
   }
   
-  .lang { display:flex; gap:6px; background:var(--card); padding:4px; border-radius:999px; border:1px solid rgba(240,160,75,.25); }
-  .lang button { background:transparent; border:none; color:var(--muted); padding:6px 14px; border-radius:999px; font-weight:700; font-size:13px; cursor:pointer; transition:all .3s ease; }
+  .lang { 
+    display:flex; 
+    gap:6px; 
+    background:var(--card); 
+    padding:4px; 
+    border-radius:999px; 
+    border:1px solid rgba(240,160,75,.25); 
+    transition: background 0.5s ease;
+  }
+  .lang button { background:transparent; border:none; color:var(--muted); padding:6px 16px; border-radius:999px; font-weight:800; font-size:13px; cursor:pointer; transition:all .3s ease; }
   .lang button.active { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#0f141a; box-shadow:0 4px 14px var(--glow); }
 
   .hint-text {
     text-align: center;
-    font-size: 15px;
-    font-weight: 800;
+    font-size: 14px;
+    font-weight: 700;
     color: var(--accent);
     animation: pulse 2s infinite;
+    margin-bottom: -5px;
     text-shadow: 0 0 10px var(--glow);
-    margin-top: 8px;
   }
-  
   @keyframes pulse {
     0% { opacity: 0.7; transform: translateY(0); }
     50% { opacity: 1; transform: translateY(-3px); }
@@ -732,20 +762,45 @@
   }
 
   .albums-nav { 
-    display: flex; gap: 8px; justify-content: center; width: 100%;
-    background: rgba(0,0,0,0.2); padding: 8px; border-radius: 20px; 
+    display: flex; 
+    gap: 8px; 
+    justify-content: center; 
+    background: rgba(0,0,0,0.2); 
+    padding: 8px; 
+    border-radius: 20px; 
     border: 2px solid rgba(240,160,75,.2); 
     transition: background 0.5s ease, border-color 0.5s ease;
+    width: 100%;
   }
   .albums-nav button { 
-    flex: 1; background: transparent; border: 2px solid transparent; 
-    color: var(--muted); padding: 12px 10px; border-radius: 14px; 
-    font-weight: 800; font-size: 15px; cursor: pointer; 
-    transition: all .3s ease; text-transform: uppercase;
+    flex: 1; 
+    background: transparent; 
+    border: 2px solid transparent; 
+    color: var(--muted); 
+    padding: 12px 10px; 
+    border-radius: 14px; 
+    font-weight: 800; 
+    font-size: 15px; 
+    cursor: pointer; 
+    transition: all .3s ease; 
+    text-transform: uppercase;
   }
-  .albums-nav button:not(.active) { border-color: rgba(240,160,75,.3); box-shadow: inset 0 0 10px rgba(240,160,75,.1); }
-  .albums-nav button:not(.active):hover { border-color: var(--accent); color: var(--text); }
-  .albums-nav button.active { background: linear-gradient(135deg,var(--accent),var(--accent2)); color: #0f141a; box-shadow: 0 4px 15px var(--glow); border-color: transparent; }
+  
+  .albums-nav button:not(.active) {
+    border-color: rgba(240,160,75,.3);
+    box-shadow: inset 0 0 10px rgba(240,160,75,.1);
+  }
+  .albums-nav button:not(.active):hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .albums-nav button.active { 
+    background: linear-gradient(135deg,var(--accent),var(--accent2)); 
+    color: #0f141a; 
+    box-shadow: 0 4px 15px var(--glow); 
+    border-color: transparent;
+  }
   
   .album { text-align:center; display:flex; flex-direction:column; align-items:center; gap:16px; width:100%; max-width:600px; }
   .album__cover { width:min(280px,72vw); aspect-ratio:1/1; border-radius:22px; object-fit:cover; box-shadow:0 24px 70px var(--glow); border:2px solid rgba(240,160,75,.3); pointer-events: none; transition: box-shadow 0.5s ease, border-color 0.5s ease; }
@@ -778,7 +833,9 @@
 <body>
 
   <div class="top-bar">
-    <div class="lang-wrap">
+    
+    <!-- НОВЫЙ БЛОК: Текст слева, кнопки справа -->
+    <div class="lang-row">
       <div class="lang-hint" id="langHint">Тут есть песни на двух языках!</div>
       <div class="lang" role="group" aria-label="Language">
         <button id="btnRu">RU</button>
@@ -786,7 +843,6 @@
       </div>
     </div>
     
-    <!-- Эта подсказка теперь висит всегда -->
     <div class="hint-text" id="hintText">👇 У нас есть ещё один альбом! 👇</div>
 
     <div class="albums-nav" id="albumsNav">
@@ -910,7 +966,7 @@
     albumSub.textContent = lang === 'ru' ? album.titleEn : album.titleRu;
     playerArtist.textContent = `${lang === 'en' ? album.titleEn : album.titleRu} / ${lang === 'en' ? album.titleRu : album.titleEn}`;
 
-    // Подсказка про языки (меняется в зависимости от языка)
+    // Меняем текст подсказки про языки
     if (lang === 'en') {
       langHint.textContent = "Songs in two languages!";
     } else {
