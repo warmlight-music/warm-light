@@ -120,7 +120,36 @@
 </style>
 </head>
 <body>
+<!-- Кнопка возврата на главную -->
+<a href="https://warmlight-music.github.io/my-music/" class="back-to-main">
+    ← Вернуться к дискографии
+</a>
 
+<style>
+    .back-to-main {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background-color: #2a211c;
+        color: #d4af37;
+        padding: 10px 20px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-family: 'Georgia', serif;
+        font-size: 14px;
+        border: 1px solid #4a3b2f;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        transition: all 0.3s ease;
+        z-index: 9999; /* Чтобы кнопка была поверх всего */
+    }
+
+    .back-to-main:hover {
+        background-color: #d4af37;
+        color: #1a1512;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+    }
+</style>
   <div class="top-bar">
     <div class="lang" role="group" aria-label="Language">
       <button id="btnRu">RU</button>
